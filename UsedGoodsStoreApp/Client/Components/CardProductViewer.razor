@@ -1,0 +1,15 @@
+﻿<MudCard @onclick="() => EventCall(Product)" Style="width:200px; height:200px;">
+    @if(Product.ProductImages.Where(x => x.IsMainImage == true).FirstOrDefault() != null)
+    {
+        <MudImage Style="width:100%; height:120px;" Src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Product.ProductImages.Where(x => x.IsMainImage == true).First()?.Image))"></MudImage>
+
+    }
+    else
+    {
+        <MudCardMedia Image="" Height="120" />        
+    }
+    <MudCardContent>
+        <MudText Align="Align.Center" Typo="Typo.h5">@Product.Name</MudText>
+        <MudText Align="Align.Center" Typo="Typo.body2">Cena: @Product.Price</MudText>
+    </MudCardContent>
+</MudCard>

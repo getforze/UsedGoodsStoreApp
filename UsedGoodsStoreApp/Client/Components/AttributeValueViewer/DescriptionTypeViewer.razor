@@ -1,0 +1,8 @@
+﻿<MudText Typo="Typo.body2">@Attribute.Attribute1.Name: @Convert()</MudText>
+
+@code {
+    public MarkupString Convert()
+    {
+        return new MarkupString(Attribute.AttributeValue.Value);
+    }
+}

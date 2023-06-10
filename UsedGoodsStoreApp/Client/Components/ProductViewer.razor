@@ -1,0 +1,39 @@
+﻿@using UsedGoodsStoreApp.Client.Components.AttributeValueViewer
+<MudButton OnClick="AddToCart">Dodaj do koszyka</MudButton>
+@if (Product.ProductImages.Count() > 0)
+{
+    <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+
+        @foreach (var image in Product.ProductImages)
+        {
+            <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary">
+                <div class="d-flex" style="height:100%">
+                    <MudImage Style="margin-left:auto;margin-right:auto;" Src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(image.Image))"></MudImage>
+
+                </div>
+            </MudCarouselItem>
+        }
+    </MudCarousel>
+}
+else
+{
+    <MudText Style="width:100%;" Align="Align.Center">Brak zdjęć</MudText>
+}
+<MudText Align="Align.Center" Typo="Typo.h4">@Product.Name</MudText>
+<MudText Align="Align.Center" Typo="Typo.body2">Cena: @Product.Price</MudText>
+
+@if (Product.AttributeProducts.Count() == 0)
+{
+    <MudText Typo="Typo.body2">Brak dodatkowego opisu</MudText>
+}
+else
+{
+    <MudText Typo="Typo.body2">Opis:</MudText>
+    @foreach (var attribute in Product.AttributeProducts)
+    {
+        <div style="margin:10px;">
+            <AttributeTypeViewer Attribute="attribute"></AttributeTypeViewer>
+        </div>
+    }
+
+}

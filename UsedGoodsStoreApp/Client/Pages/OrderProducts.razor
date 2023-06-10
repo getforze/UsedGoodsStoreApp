@@ -1,0 +1,41 @@
+﻿@page "/orderProducts"
+
+@if (LoginState.User.UserId == 0)
+{
+    <MudText Typo="Typo.h3" Align="Align.Center">Użytkownik nie jest zalogowany</MudText>
+}
+else
+{
+
+    <MudCard>
+        <MudForm @ref="@form" ValidationDelay="0">
+            <MudCardContent>
+
+                <MudTextField @bind-Value="Order.City"
+                              Label="Miasto" 
+                              Required="true"/>
+                <MudTextField @bind-Value="Order.PostalCode"
+                              Label="Kod pocztowy"
+                              Mask="@mask1"
+                              Required="true"/>
+                <MudTextField @bind-Value="Order.Street"
+                              Label="Ulica" 
+                              Required="true"/>
+                <MudTextField @bind-Value="Order.HouseNumber"
+                              Label="Numer domu" 
+                              Required="true"/>
+                <MudTextField @bind-Value="Order.ApartamentNumber"
+                              Label="Numer lokalu" 
+                              Required="false"/>
+
+            </MudCardContent>
+        </MudForm>
+        <MudCardActions>
+            <MudButton Variant="MudBlazor.Variant.Filled" OnClick="CreateOrder" Color="Color.Primary">Zamów</MudButton>
+        </MudCardActions>
+    </MudCard>
+
+}
+@code {
+    IMask mask1 = new DateMask("00-000");
+}

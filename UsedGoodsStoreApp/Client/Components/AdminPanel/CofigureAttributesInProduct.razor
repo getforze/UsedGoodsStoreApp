@@ -1,0 +1,35 @@
+﻿@using MudBlazor.Utilities;
+@using UsedGoodsStoreApp.Shared.Models;
+<MudDialog>
+    <DialogContent>
+        <MudGrid Style="height:100vh;overflow:auto">
+            <MudPaper Width="30%">
+                <MudList Clickable="true">
+                    @foreach (var attribute1 in Attributes.Where(x => !AttributesProduct.Any(c => c.Attribute1.AttributeId == x.AttributeId)).OrderBy(x => x.Name).ToList())
+                    {
+                        <MudListItem OnClick="() => AddAtribute(attribute1)" Icon="@Icons.Material.Filled.Add">
+                            @attribute1.Name
+                        </MudListItem>
+                    }
+                </MudList>
+            </MudPaper>
+            <MudPaper Width="70%" Height="100vh">
+                <MudList>
+                    @foreach (var attribute1 in AttributesProduct.OrderBy(x => x.Attribute1.Name).ToList())
+                    {
+                      <MudListItem Icon="@Icons.Material.Filled.Add">
+                          <div style="width:100%">
+                                @attribute1.Attribute1.Name
+                                <UsedGoodsStoreApp.Client.Components.AdminPanel.AttributeValue.AttributeType Attribute="attribute1"></UsedGoodsStoreApp.Client.Components.AdminPanel.AttributeValue.AttributeType>
+                          </div>
+                      </MudListItem>
+                    }
+                </MudList>
+                <MudButton FullWidth="true" OnClick="UpdateAttributesProduct">Zapisz</MudButton>
+            </MudPaper>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="UpdateAttributesProduct">Edytuj</MudButton>
+    </DialogActions>
+</MudDialog>

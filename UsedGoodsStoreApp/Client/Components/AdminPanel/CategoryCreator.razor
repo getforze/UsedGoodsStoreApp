@@ -1,0 +1,15 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudTextField @bind-Value=@Category.Name T="string" Label="Nazwa" Required="true" RequiredError="Nazwa jest wymagana" />
+        <MudSelect @bind-Value="@Category.ParentCategoryId" T="int" Label="Rodzic" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="0">Brak</MudSelectItem>
+            @foreach(var category in Categories.Where(x => x.CategoryId != Category.CategoryId))
+            {
+                <MudSelectItem Value="@category.CategoryId">@category.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="AddNewCategory">Dodaj</MudButton>
+    </DialogActions>
+</MudDialog>

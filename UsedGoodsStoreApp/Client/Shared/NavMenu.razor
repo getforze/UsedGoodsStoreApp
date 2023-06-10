@@ -1,0 +1,66 @@
+﻿@using UsedGoodsStoreApp.Shared.Models;
+
+@inject NavigationManager NavigationManager
+
+<MudNavMenu>
+    @if (_loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    else
+    {
+
+        @foreach (var category in CategoriesList.Where(x => x.InverseParentCategory.Count() > 0).OrderBy(x => x.Name))
+        {
+            <MudNavGroup Title="@category.Name" Icon="@Icons.Material.Filled.Category" Expanded="true">
+                @if (category.InverseParentCategory != null && category.InverseParentCategory.Count > 0)
+                { @foreach (var category1 in category.InverseParentCategory.OrderBy(x => x.Name))
+                    {
+                        <MudNavLink @onclick="() => OpenCategorySite(category1.CategoryId)" Icon="@Icons.Material.Filled.Category" Expanded="true">
+                            @category1.Name
+                        </MudNavLink>
+                    }
+                }
+            </MudNavGroup>
+        }
+        @foreach (var category in CategoriesList.Where(x => x.InverseParentCategory.Count() > 0).OrderBy(x => x.Name))
+        {
+            <MudNavLink @onclick="() => OpenCategorySite(category.CategoryId)" Icon="@Icons.Material.Filled.Category" Expanded="true">
+                @category.Name
+            </MudNavLink>
+        }
+    }
+
+
+</MudNavMenu>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+
+    RenderFragment GenerateSubNavMenu(List<CategoryDTO> categories)
+    {
+        return builder =>
+        {
+            foreach (var category in categories)
+            {
+                builder.OpenComponent<MudNavGroup>(0);
+                builder.AddAttribute(1, "Title", category.Name);
+                builder.AddAttribute(2, "Icon", "@Icons.Material.Filled.Category");
+                builder.AddAttribute(3, "Expanded", true);
+                builder.AddAttribute(4, "@onclick", EventCallback.Factory.Create(this, () => OpenCategorySite(category.CategoryId)));
+
+                if (category.InverseParentCategory != null && category.InverseParentCategory.Count > 0)
+                {
+                    builder.AddContent(4, GenerateSubNavMenu(category.InverseParentCategory));
+                }
+
+                builder.CloseComponent();
+            }
+        };
+    }
+}

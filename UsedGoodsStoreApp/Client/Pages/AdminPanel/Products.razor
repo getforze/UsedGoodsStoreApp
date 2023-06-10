@@ -1,0 +1,27 @@
+﻿@using UsedGoodsStoreApp.Shared
+@layout AdminLayout
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(@Routes.AdminPanelProducts)]
+@using System.Net.Http.Json
+@inject IDialogService DialogService
+
+<MudIconButton OnClick=AddProduct Icon="@Icons.Material.Filled.Add" aria-label="delete"></MudIconButton>
+<MudTable Items="@ProductsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Nazwa</MudTh>
+        <MudTh>Kategoria</MudTh>
+        <MudTh>Kwota</MudTh>
+        @*<MudTh>Usuń</MudTh>*@
+        <MudTh>Edytuj</MudTh>
+        <MudTh>Atrybuty</MudTh>
+        <MudTh>Zdjęcia</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nazwa">@context.Name</MudTd>
+        <MudTd DataLabel="Kategoria">@context?.Category?.Name</MudTd>
+        <MudTd DataLabel="Kwota">@context.Price</MudTd>
+        @*<MudTd DataLabel="Usuń"><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => DeleteProduct(context.CategoryId)" aria-label="delete"></MudIconButton></MudTd>*@
+        <MudTd DataLabel="Edytuj"><MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => UpdateProduct(context)" aria-label="delete"></MudIconButton></MudTd>
+        <MudTd DataLabel="Atrybuty"><MudIconButton Icon="@Icons.Material.Filled.ConfirmationNumber" OnClick="() => CofigureAttributes(context)"></MudIconButton></MudTd>
+        <MudTd DataLabel="Zdjęcia"><MudIconButton Icon="@Icons.Material.Filled.Image" OnClick="() => CofigureImages(context)"></MudIconButton></MudTd>
+    </RowTemplate>
+</MudTable>

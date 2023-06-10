@@ -1,0 +1,19 @@
+﻿<MudDialog>
+    <DialogContent>
+        @if (Product != null)
+        {
+            <MudTextField @bind-Value=@Product.Name T="string" Label="Nazwa" Required="true" RequiredError="Nazwa jest wymagana" />
+            <MudTextField @bind-Value=@Product.Price T="decimal" Label="Kwota" Required="true" RequiredError="Kwota jest wymaga" />
+            <MudSelect @bind-Value="@Product.CategoryId" T="int" Label="Kategoria" AnchorOrigin="Origin.BottomCenter">
+                <MudSelectItem Value="0">Brak</MudSelectItem>
+                @foreach (var category in CategoriesList)
+                {
+                    <MudSelectItem Value="@category.CategoryId">@category.Name</MudSelectItem>
+                }
+            </MudSelect>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="EditProduct">Edytuj</MudButton>
+    </DialogActions>
+</MudDialog>

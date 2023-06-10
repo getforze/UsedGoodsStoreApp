@@ -1,0 +1,26 @@
+﻿@page "/cart"
+@using UsedGoodsStoreApp.Client.Components
+
+@if (ShoppingCart.Products.Count() > 0)
+{
+    <MudTable Items="@ShoppingCart.Products" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>Nazwa</MudTh>
+            <MudTh>Kategoria</MudTh>
+            <MudTh>Kwota</MudTh>
+            <MudTh>Usuń</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nazwa">@context.Name</MudTd>
+            <MudTd DataLabel="Kategoria">@context?.Category?.Name</MudTd>
+            <MudTd DataLabel="Kwota">@context.Price</MudTd>
+            <MudTd DataLabel="Usuń"><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => DeleteProduct(context)" aria-label="delete"></MudIconButton></MudTd>
+        </RowTemplate>
+    </MudTable>
+    <MudText>Razem @ShoppingCart.Products.Count() przedmiot/y/ów o wartości  @ShoppingCart.Products.Sum(x => x.Price)</MudText>
+    <MudButton Color="Color.Primary" OnClick="OrderProducts">Zamów</MudButton>
+}
+else
+{
+    <MudText Color="Color.Primary" Typo="Typo.h3" Align="Align.Center">Brak przedmiotów w koszyku</MudText>
+}

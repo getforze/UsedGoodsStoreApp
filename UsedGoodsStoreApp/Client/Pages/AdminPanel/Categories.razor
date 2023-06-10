@@ -1,0 +1,21 @@
+﻿@using UsedGoodsStoreApp.Shared
+@layout AdminLayout
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(@Routes.AdminPanelCategories)]
+@using System.Net.Http.Json
+@inject IDialogService DialogService
+
+<MudIconButton OnClick=AddCategory Icon="@Icons.Material.Filled.Add" aria-label="delete"></MudIconButton>
+<MudTable Items="@CategoriesList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Nazwa</MudTh>
+        <MudTh>Rodzic</MudTh>
+        @*<MudTh>Usuń</MudTh>*@
+        <MudTh>Edytuj</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nazwa">@context.Name</MudTd>
+        <MudTd DataLabel="Rodzic">@context.ParentCategory?.Name</MudTd>
+        @*<MudTd DataLabel="Usuń"><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => DeleteCategory(context.CategoryId)" aria-label="delete"></MudIconButton></MudTd>*@
+        <MudTd DataLabel="Edytuj"><MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => UpdateCategory(context)" aria-label="delete"></MudIconButton></MudTd>
+    </RowTemplate>
+</MudTable>

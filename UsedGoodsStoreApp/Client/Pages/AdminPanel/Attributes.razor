@@ -1,0 +1,21 @@
+﻿@using UsedGoodsStoreApp.Shared
+@layout AdminLayout
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(@Routes.AdminPanelAttributes)]
+@using System.Net.Http.Json
+@inject IDialogService DialogService
+
+<MudIconButton OnClick=AddAttribute Icon="@Icons.Material.Filled.Add" aria-label="delete"></MudIconButton>
+<MudTable Items="@AttributesList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Nazwa</MudTh>
+        <MudTh>Typ</MudTh>
+        @*<MudTh>Usuń</MudTh>*@
+        <MudTh>Edytuj</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nr">@context.Name</MudTd>
+        <MudTd DataLabel="Sign">@context.Type</MudTd>
+        @*<MudTd DataLabel="Name"><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => DeleteAttribute(context.AttributeId)" aria-label="delete"></MudIconButton></MudTd>*@
+        <MudTd DataLabel="Name"><MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => UpdateAttribute(context)" aria-label="delete"></MudIconButton></MudTd>
+    </RowTemplate>
+</MudTable>

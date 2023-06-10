@@ -1,0 +1,23 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using UsedGoodsStoreApp.Client
+@using UsedGoodsStoreApp.Client.Services
+@using UsedGoodsStoreApp.Client.Shared
+@using MudBlazor 
+@using UsedGoodsStoreApp.Shared
+@using Radzen
+@using Radzen.Blazor
+
+@inject IHttpService HttpService
+@inject IUsedGoodsStoreService UsedGoodsStoreService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject ShoppingCart ShoppingCart
+@inject ISnackbar Snackbar
+@inject LoginState LoginState

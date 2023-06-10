@@ -1,0 +1,93 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" @onclick="GoToMainPage" Class="ml-3">Sklep</MudText>
+        <MudSpacer />
+        <MudBadge Content="ShoppingCart.Products.Count().ToString()" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+            <MudFab OnClick="GoToCart" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.ShoppingCart" DisableElevation="true" />
+        </MudBadge>
+        @if(LoginState.User.UserId == 0)
+        {
+            <MudIconButton OnClick="GoToLoginPage" Size="Size.Small" Icon="@Icons.Material.Filled.Login" aria-label="login"></MudIconButton>
+        }
+        else
+        {
+            <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Dense="true">
+                <ActivatorContent>
+                    <MudAvatar Color="Color.Secondary">@FirstUserLetter()</MudAvatar>
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem OnClick="BeginSignOut" Icon="@Icons.Material.Filled.Logout">Log out</MudMenuItem>
+                    <MudMenuItem OnClick="GoToUserOrders" Icon="@Icons.Material.Filled.List">Zamówienia użytkownika</MudMenuItem>
+                    @if (LoginState.User.Permission != null && LoginState.User.Permission.IsAdmin == true)
+                    {
+                        <MudMenuItem OnClick="GoToAdminPanel" Icon="@Icons.Material.Filled.List">Panel administratora</MudMenuItem>
+                    }
+                </ChildContent>
+            </MudMenu>
+        }
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent Class="mt-0">
+
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+            <ChildContent>
+                @Body
+            </ChildContent>
+        </MudContainer>
+
+    </MudMainContent>
+</MudLayout>
+@code {
+    bool _drawerOpen = true;
+    protected override void OnInitialized()
+    {
+        ShoppingCart.OnChange += StateHasChanged;
+        LoginState.OnChange += StateHasChanged;
+    }
+    async Task DrawerToggle()
+    {
+        var list = await UsedGoodsStoreService.GetAttributesList();
+        _drawerOpen = !_drawerOpen;
+    }
+    public void GoToAdminPanel()
+    {
+        NavigationManager.NavigateTo(Routes.AdminPanelAttributes);
+    }
+    public void GoToLoginPage()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+    public void GoToMainPage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    public void GoToUserOrders()
+    {
+        NavigationManager.NavigateTo(Routes.UserOrder);
+    }
+    public void GoToCart()
+    {
+        NavigationManager.NavigateTo("/cart");
+    }
+    public string FirstUserLetter()
+    {
+        if (LoginState.User.Name !=null)
+        if (LoginState.User.Name.Length > 0)
+            return LoginState.User.Name[0].ToString();
+        return "";
+    }
+    private async Task BeginSignOut()
+    {
+        LoginState.Logout();
+        Snackbar.Add("Wylogowano", Severity.Success);
+    }
+}

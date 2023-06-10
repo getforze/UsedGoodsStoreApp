@@ -1,0 +1,22 @@
+﻿<MudDialog>
+    <DialogContent>
+        @if (Product == null)
+        {
+            <MudGrid Justify="Justify.Center">
+                @foreach (var product in Products)
+                {
+                    <MudItem>
+                        <CardProductViewer Product="product.Product" Callback="SetProduct"></CardProductViewer>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+        else
+        {
+            <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" OnClick="GoBack"></MudIconButton>
+            <ProductViewer Product="Product"></ProductViewer>
+        }
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>

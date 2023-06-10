@@ -1,0 +1,27 @@
+﻿@page "/ProductsInCategory/{CategoryId:int}"
+@using UsedGoodsStoreApp.Client.Components
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+}
+else
+{
+
+    @if (Product == null)
+    {
+        <MudGrid Justify="Justify.Center">
+            @foreach (var product in Products)
+            {
+                <MudItem>
+                    <CardProductViewer Product="product" Callback="SetProduct"></CardProductViewer>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    else
+    {
+        <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Primary" OnClick="GoBack"></MudIconButton>
+        <ProductViewer Product="Product"></ProductViewer>
+    }
+}

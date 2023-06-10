@@ -1,0 +1,16 @@
+﻿<MudDialog>
+    <DialogContent>
+        @if(Attribute != null)
+        {
+             <MudTextField @bind-Value=@Attribute.Name T="string" Label="Nazwa" Required="true" RequiredError="Nazwa jest wymagana" />
+             <MudSelect @bind-Value=@Attribute.Type T="string" Label="Typy" AnchorOrigin="Origin.BottomCenter">
+                 <MudSelectItem Value="@("Text")" />
+                 <MudSelectItem Value="@("Description")" />
+                 <MudSelectItem Value="@("Number")" />
+             </MudSelect>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="AddNewAttribute">Edytuj</MudButton>
+    </DialogActions>
+</MudDialog>

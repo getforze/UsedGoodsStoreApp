@@ -1,0 +1,44 @@
+﻿@using UsedGoodsStoreApp.Shared
+@layout AdminLayout
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(@Routes.AdminPanelOrders)]
+@using System.Net.Http.Json
+@using UsedGoodsStoreApp.Shared.Models;
+@inject IDialogService DialogService
+
+<MudTable Items="@OrdersList.OrderByDescending(x => x.OrderDate)" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Email</MudTh>
+        <MudTh>Data</MudTh>
+        <MudTh>Ilosc produktów</MudTh>
+        <MudTh>Misto</MudTh>
+        <MudTh>Ulica</MudTh>
+        <MudTh>Numer domu</MudTh>
+        <MudTh>Akceptacja</MudTh>
+        <MudTh>Anuluj</MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Email">@context.User.Email</MudTd>
+        <MudTd DataLabel="Data">@context.OrderDate</MudTd>
+        <MudTd DataLabel="Ilosc produktów">
+            @context.OrderItems.Count()
+            <MudButton OnClick="() => OpenPreview(context)">Pogląd</MudButton>
+        </MudTd>
+        <MudTd DataLabel="Miasto">@context.City</MudTd>
+        <MudTd DataLabel="Ulica">@context.Street</MudTd>
+        <MudTd DataLabel="Numer domu">@context.HouseNumber</MudTd>
+        <MudTd DataLabel="Akceptacja">
+            @if (context.OrderStatusId == (int)Statuses.WaitingForAccept)
+            {
+                <MudIconButton Icon="@Icons.Material.Filled.AddReaction" OnClick="() => AcceptOrder(context)" aria-label="delete"></MudIconButton>
+            }
+        </MudTd>
+        <MudTd DataLabel="Anuluj">
+            @if (context.OrderStatusId == (int)Statuses.WaitingForAccept)
+            {
+                <MudIconButton Icon="@Icons.Material.Filled.Cancel" OnClick="() => CancelOrder(context)" aria-label="delete"></MudIconButton>
+            }
+        </MudTd>
+            <MudTd DataLabel="Status zamówienia"> @context.OrderStatus.Name</MudTd>
+    </RowTemplate>
+</MudTable>

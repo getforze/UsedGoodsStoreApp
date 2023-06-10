@@ -1,0 +1,65 @@
+﻿@page "/CreateUser"
+@using System.ComponentModel.DataAnnotations;
+@using System.Text.RegularExpressions;
+@using UsedGoodsStoreApp.Shared.Models;
+<MudGrid>
+    <MudItem Style="width:100%;">
+        <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudTextField @bind-Value="User.Name" T="string" Label="Imie" Required="true" RequiredError="User name is required!" />
+            <MudTextField @bind-Value="User.Email" T="string" Label="Email" Required="true" RequiredError="Email is required!"
+                          Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
+            <MudTextField @bind-Value="User.Password" T="string" Label="Hasło" HelperText="Choose a strong password" @ref="pwField1"
+                          InputType="InputType.Password"
+                          Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                          RequiredError="Password is required!" />
+            <MudTextField T="string"
+                          Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
+                          Validation="@(new Func<string, string>(PasswordMatch))" />
+            <div class="d-flex align-center justify-space-between">
+                <MudButton Variant="MudBlazor.Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="AddUser" Class="ml-auto">Załóż konto</MudButton>
+            </div>
+        </MudForm>
+    </MudItem>
+</MudGrid>
+@code {
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1;
+    MudForm form;
+    UserDTO User = new UserDTO();
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Password is required!";
+            yield break;
+        }
+        if (pw.Length < 8)
+            yield return "Password must be at least of length 8";
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return "Password must contain at least one capital letter";
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return "Password must contain at least one lowercase letter";
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return "Password must contain at least one digit";
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (pwField1.Value != arg)
+            return "Passwords don't match";
+        return null;
+    }
+    private async Task AddUser()
+    {
+        await form.Validate();
+        if (!form.IsValid)
+        {
+            Snackbar.Add("Nieprawidłowe dane", Severity.Warning);
+            return;
+        }
+        await UserService.CreateUser(User);
+    }
+
+}
